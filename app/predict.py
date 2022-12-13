@@ -49,7 +49,10 @@ def predict_m(day=None):
 
     playeridx = base_repr(data['K'].index('players'), 36).lower()
     nameidx = base_repr(data['K'].index('name'), 36).lower()
-    scoreidx = base_repr(data['K'].index('scores'), 36).lower()
+    try:
+        scoreidx = base_repr(data['K'].index('scores'), 36).lower()
+    except:
+        scoreidx = -1
     title = base_repr(data['K'].index('title'), 36).lower()
 
     df_event = pd.DataFrame(columns=['p1', 'p2', 'result'])
@@ -59,16 +62,19 @@ def predict_m(day=None):
             p2 = data["_"]["0"]["1"][i]["0"][j][str(playeridx)][1][nameidx]
             try:
                 a, b = 0, 0
-                for z in range(len(data["_"]["0"]["1"][i]["0"][j][scoreidx])):
-                    # print(data["_"]["0"]["1"][i]["0"][j]["d"][z])
-                    if(data["_"]["0"]["1"][i]["0"][j][scoreidx][z][0]['e'] > data["_"]["0"]["1"][i]["0"][j][scoreidx][z][1]['e']):
-                        a += 1
-                    else:
-                        b += 1
-                if(a > b):
-                    result = 1
+                if(scoreidx == -1):
+                    result = -1
                 else:
-                    result = 0
+                    for z in range(len(data["_"]["0"]["1"][i]["0"][j][scoreidx])):
+                        # print(data["_"]["0"]["1"][i]["0"][j]["d"][z])
+                        if(data["_"]["0"]["1"][i]["0"][j][scoreidx][z][0]['e'] > data["_"]["0"]["1"][i]["0"][j][scoreidx][z][1]['e']):
+                            a += 1
+                        else:
+                            b += 1
+                    if(a > b):
+                        result = 1
+                    else:
+                        result = 0
             except:
                 result = -1
             # event = data["_"]["0"]["1"][i]["2"]
@@ -78,6 +84,8 @@ def predict_m(day=None):
 
     df_event['p1'] = df_event['p1'].apply(lambda x: data["P"][int(x[2:], 36)] if x[0]=='p' else x)
     df_event['p2'] = df_event['p2'].apply(lambda x: data["P"][int(x[2:], 36)] if x[0]=='p' else x)
+
+    print(df_event)
 
     pd_columns = columns
     df_future = pd.DataFrame(columns=pd_columns)
@@ -161,14 +169,15 @@ def predict_m(day=None):
             i[0] = df_player_name_id.loc[df_player_name_id['id'] == i[0]][['first', 'last']].to_string(header=False, index=False, index_names=False).split('\n')[0]
             i[1] = df_player_name_id.loc[df_player_name_id['id'] == i[1]][['first', 'last']].to_string(header=False, index=False, index_names=False).split('\n')[0]
         result2[:,2] = None
-        return np.concatenate((result1[0], result2)), -1
+        try:
+            return np.concatenate((result1[0], result2)), -1
+        except:
+            return result2, -1
     if(df_future.empty and df_future_no_result.empty):
         return "No Matches Avaliable"
     return result1
     
     
-
-
 if __name__ == '__main__':
     # print(predict_m('today'))
     # predict_m()
