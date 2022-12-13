@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, Response, abort
 from flask_restx import Resource, Api
-from predict import predict_m
+from .predict import predict_m
 from gevent.pywsgi import WSGIServer
 import json
 from flask_cors import CORS
