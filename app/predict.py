@@ -136,7 +136,7 @@ def predict_m(day=None):
         y_pred = df.values[:, -1]
         x_pred = np.asarray(x_pred).astype('float32')
         y_pred = np.asarray(y_pred).astype('float32')
-        sc = pickle.load(open('scaler.pkl','rb'))
+        sc = pickle.load(open(os.path.join(BASE_DIR, 'app/scaler.pkl'),'rb'))
         x_pred = sc.transform(x_pred)
         yhat_pred = (model.predict(x_pred) > 0.5).astype(int)
         # print(confusion_matrix(y_pred, yhat_pred))
