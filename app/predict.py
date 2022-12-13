@@ -18,9 +18,12 @@ columns = ['p1_id', 'p1_hand', 'p1_ht', 'p1_age', 'p2_id', 'p2_hand', 'p2_ht',
            'p2_svpt', 'p2_1stIn', 'p2_1stWon', 'p2_2ndWon', 'p2_SvGms',
            'p2_bpSaved', 'p2_bpFaced', 'p1_rank', 'p2_rank', 'result']
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def predict_m(day=None):
-    model = keras.models.load_model('./tennis_model_big')
+    model = keras.models.load_model(os.path.join(BASE_DIR, 'app/tennis_model_big')
     df_with_names, df = load_matches_csv()
     today = date.today()
     if not day:

@@ -6,6 +6,7 @@ import json
 from flask_cors import CORS
 
 
+
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r'/*': {'origins': '*'}})
