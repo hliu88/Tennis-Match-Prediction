@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from numpy import base_repr
 import keras
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
@@ -45,33 +46,35 @@ def predict_m(day=None):
         url = 'https://tnnz.io/api_web?date={}&mode=matches_daily&timezone=America%2FNew_York&language=en&platform=web&version=100&subscribed=%7B%7D&favorites=%7B%7D&theme_settings=%7B%7D'.format(tomorrow)
         data = requests.get(url).json()
         # print(data)
-    df_event = pd.DataFrame(columns=['p1', 'p2', 'result', 'event'])
+
+    playeridx = base_repr(data['K'].index('players'), 36).lower()
+    nameidx = base_repr(data['K'].index('name'), 36).lower()
+    scoreidx = base_repr(data['K'].index('scores'), 36).lower()
+    title = base_repr(data['K'].index('title'), 36).lower()
+
+    df_event = pd.DataFrame(columns=['p1', 'p2', 'result'])
     for i in range(len(data["_"]["0"]["1"])):
         for j in range(len(data["_"]["0"]["1"][i]["0"])):
+            p1 = data["_"]["0"]["1"][i]["0"][j][str(playeridx)][0][nameidx]
+            p2 = data["_"]["0"]["1"][i]["0"][j][str(playeridx)][1][nameidx]
             try:
-                p1 = data["_"]["0"]["1"][i]["0"][j]["7"][0]['8']
-                p2 = data["_"]["0"]["1"][i]["0"][j]["7"][1]['8']
-                if(data["_"]["0"]["1"][i]["0"][j]["j"]=='scheduled'):
-                    result = -1
-                elif(not data["_"]["0"]["1"][i]["0"][j]["d"]):
-                    pass
-                else:
-                    a, b = 0, 0
-                    for z in range(len(data["_"]["0"]["1"][i]["0"][j]["d"])):
-                        if(data["_"]["0"]["1"][i]["0"][j]["d"][z][0]['e'] > data["_"]["0"]["1"][i]["0"][j]["d"][z][1]['e']):
-                            a += 1
-                        else:
-                            b += 1
-                    if(a > b):
-                        result = 1
+                a, b = 0, 0
+                for z in range(len(data["_"]["0"]["1"][i]["0"][j][scoreidx])):
+                    # print(data["_"]["0"]["1"][i]["0"][j]["d"][z])
+                    if(data["_"]["0"]["1"][i]["0"][j][scoreidx][z][0]['e'] > data["_"]["0"]["1"][i]["0"][j][scoreidx][z][1]['e']):
+                        a += 1
                     else:
-                        result = 0
-                event = data["_"]["0"]["1"][i]["2"]
-                if("Doubles" in event):
-                    continue
-                df_event.loc[len(df_event.index)] = [p1, p2, result, event] 
+                        b += 1
+                if(a > b):
+                    result = 1
+                else:
+                    result = 0
             except:
-                continue
+                result = -1
+            # event = data["_"]["0"]["1"][i]["2"]
+            # if("Doubles" in event):
+            #     continue
+            df_event.loc[len(df_event.index)] = [p1, p2, result] 
 
     df_event['p1'] = df_event['p1'].apply(lambda x: data["P"][int(x[2:], 36)] if x[0]=='p' else x)
     df_event['p2'] = df_event['p2'].apply(lambda x: data["P"][int(x[2:], 36)] if x[0]=='p' else x)
