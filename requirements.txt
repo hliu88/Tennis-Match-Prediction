@@ -5,10 +5,10 @@ flask-session
 scikit-learn
 pandas
 flask-cors
-python-decouple
-flake8
-nose
-coverage
+# python-decouple
+# flake8
+# nose
+# coverage
 keras
 tensorflow-cpu
 gevent

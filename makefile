@@ -7,7 +7,7 @@ prod: tests #github
 
 dev_env: FORCE
 	#enable virtual env
-	pip install -r requirements.txt
+	# pip install -r requirements.txt
 	cd app; python app.py
 
 # github: FORCE
