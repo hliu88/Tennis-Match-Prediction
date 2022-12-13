@@ -4,7 +4,6 @@ gunicorn
 flask-session
 scikit-learn
 pandas
-spotipy
 flask-cors
 python-decouple
 flake8
