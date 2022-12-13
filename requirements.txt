@@ -11,3 +11,4 @@ nose
 coverage
 keras
 tensorflow-cpu
+gevent
