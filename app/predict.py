@@ -20,7 +20,7 @@ columns = ['p1_id', 'p1_hand', 'p1_ht', 'p1_age', 'p2_id', 'p2_hand', 'p2_ht',
 
 
 def predict_m(day=None):
-    model = keras.models.load_model('tennis_model_big')
+    model = keras.models.load_model('./tennis_model_big')
     df_with_names, df = load_matches_csv()
     today = date.today()
     if not day:
