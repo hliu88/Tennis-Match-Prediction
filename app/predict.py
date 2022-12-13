@@ -23,7 +23,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def predict_m(day=None):
-    model = keras.models.load_model(os.path.join(BASE_DIR, 'app/tennis_model_big')
+    model = keras.models.load_model(os.path.join(BASE_DIR, 'app/tennis_model_big'))
     df_with_names, df = load_matches_csv()
     today = date.today()
     if not day:
