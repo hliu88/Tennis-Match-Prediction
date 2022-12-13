@@ -6,8 +6,8 @@ from sklearn.metrics import confusion_matrix
 from joblib import load
 import json
 import pickle
-from load_matches import load_matches_csv
-from process_players import populate_df
+from .load_matches import load_matches_csv
+from .process_players import populate_df
 from sklearn.metrics import f1_score
 from datetime import date, timedelta
 import requests
