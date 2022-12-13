@@ -27,7 +27,7 @@ def predict_m(day=None):
     df_with_names, df = load_matches_csv()
     today = date.today()
     if not day:
-        f = open('match_predict.json')
+        f = open(os.path.join(BASE_DIR, 'app/match_predict.json'))
         data = json.load(f)
         f.close()
         # print(type(data))
