@@ -1,0 +1,3 @@
+[submodule "tennis-front"]
+	path = tennis-front
+	url = https://github.com/hliu88/tennis-front.git
